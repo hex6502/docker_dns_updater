@@ -1,10 +1,11 @@
 #!/bin/sh -e
 
-echo $KEY
+set -e
 
 IP_FILE="/var/cache/dns_updater/ipaddress"
 KEY_FILE="/var/cache/dns_updater/alphanumeric"
-CURRENT_IP=`/usr/bin/host myip.opendns.com | grep "has address" | cut -d ' ' -f 4`
+CURRENT_IP=$(wget -qO- https://api.ipify.org)
+
 REGISTERED_IP="Unknown"
 
 if [ -e $KEY_FILE ]; then
@@ -24,7 +25,7 @@ fi
 if [ ! "$CURRENT_IP" = "$REGISTERED_IP" ];
 then
    echo "Updating IP address from $REGISTERED_IP to $CURRENT_IP ..."
-   curl -s -k http://freedns.afraid.org/dynamic/update.php?${KEY}
+   wget -q http://sync.afraid.org/u/${KEY}/
    echo $CURRENT_IP > $IP_FILE
 fi
  

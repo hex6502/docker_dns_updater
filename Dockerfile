@@ -1,6 +1,6 @@
 FROM armhf/alpine:3.4
 
-RUN apk add --no-cache curl bind-tools
+RUN apk add --no-cache wget ca-certificates
 
 ADD update_dns.sh /bin/
 
